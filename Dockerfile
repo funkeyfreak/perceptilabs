@@ -23,8 +23,7 @@ RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6 libgl1-mesa-glx python3-opencv git -y
 
 # Create the second stage for
-#FROM continuumio/miniconda3:latest as perceptilabs
-FROM to-squash as perceptilabs
+FROM continuumio/miniconda3:latest as perceptilabs
 WORKDIR /app
 ARG certname
 ARG hostname
@@ -33,6 +32,6 @@ ENV HOST_NAME=$hostname
 
 LABEL org.dalinwillims.net.authors="support@dalinwilliams.com",\
         maintainer="FunkeyFreak, Inc"
-#COPY --from=to-squash / /
+COPY --from=to-squash / /
 
 ENTRYPOINT echo $hostname && eval `ssh-agent` && ssh-add ${CERT_NAME} && ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -fNT -R 8080:localhost:8080 -R 5000:localhost:5000 -R 8011:localhost:8011 -R 8000:localhost:8000 ${HOST_NAME}@host.docker.internal && /opt/conda/envs/perceptilabs_env/bin/perceptilabs -v=3
