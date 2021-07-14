@@ -19,7 +19,6 @@ RUN apt-get install ffmpeg libsm6 libxext6 libgl1-mesa-glx python3-opencv git -y
 # Create the second stage for minifying as much as possible the environment changes from the above stage
 FROM continuumio/miniconda3:latest as perceptilabs
 WORKDIR /app
-ADD ./ /app/
 ARG certname
 ARG hostname
 ENV CERT_NAME=$certname
